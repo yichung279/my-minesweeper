@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom'
 import 'material-symbols'
 
 function App() {
+  const navigate = useNavigate()
+
   return (
     <div className="max-w-5xl mx-auto pt-20">
       <h1 className="text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl text-center">
@@ -18,6 +21,15 @@ function App() {
           <span className="material-symbols-rounded text-4xl">flag</span>
           <span className="material-symbols-rounded text-4xl">flag</span>
         </div>
+      </div>
+      <div className="w-fit mx-auto pt-10">
+        <button
+          onClick={() => {
+            navigate('/game', { state: { key: 'value' } })
+          }}
+        >
+          Start
+        </button>
       </div>
     </div>
   )
