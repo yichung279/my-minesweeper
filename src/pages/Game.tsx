@@ -1,5 +1,4 @@
 import { useLocation } from 'react-router-dom'
-import 'material-symbols'
 
 function Game() {
   const location = useLocation()
