@@ -72,7 +72,13 @@ function App() {
             height &&
               width &&
               numOfMine &&
-              navigate('/game', { state: { height, width, numOfMine } })
+              navigate('/game', {
+                state: {
+                  height: Number(height),
+                  width: Number(width),
+                  numOfMine: Number(numOfMine),
+                },
+              })
           }}
         >
           Start
