@@ -8,6 +8,7 @@ export const useMineMap = (
 ) => {
     const [map, setMap] = useState<Mine[][]>([])
     const [mineCreated, setMineCreated] = useState(false)
+    const [visitedCount, setVisitedCount] = useState(0)
 
     const addAroundIfOK = (prevMap: Mine[][], i: number, j: number) => {
         if (i < 0 || i >= height || j < 0 || j >= width) return
@@ -64,6 +65,7 @@ export const useMineMap = (
         if (prevMap[i][j].visited) return
 
         prevMap[i][j].visited = true
+        setVisitedCount((prevCount: number) => prevCount + 1)
 
         if (prevMap[i][j].mineAround !== 0) {
             prevMap[i][j].show = prevMap[i][j].mineAround
@@ -85,6 +87,6 @@ export const useMineMap = (
     }, [])
 
 
-    return { map, setMap, mineCreated, createMines, sweep }
+    return { map, mineCreated, visitedCount, setMap, createMines, sweep }
 
 }

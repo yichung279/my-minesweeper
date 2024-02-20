@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
@@ -12,25 +12,24 @@ function Game() {
   const location = useLocation()
   const { height, width, numOfMine } = location.state // TODO: check if values exist
 
-  const { map, setMap, mineCreated, createMines, sweep } = useMineMap({
-    height,
-    width,
-    numOfMine,
-  })
+  const { map, mineCreated, visitedCount, setMap, createMines, sweep } =
+    useMineMap({
+      height,
+      width,
+      numOfMine,
+    })
 
   const handleLeftClick = (e: React.MouseEvent, i: number, j: number) => {
     console.log('l')
     if (!mineCreated) createMines(i, j)
     if (map[i][j].mine) {
-      console.log('gg')
+      console.log('lose')
       return
     }
     setMap((prevMap) => {
       sweep(prevMap, i, j)
       return [...prevMap]
     })
-
-    // checkGame
   }
 
   const handleRightClick = (e: React.MouseEvent, i: number, j: number) => {
@@ -39,6 +38,13 @@ function Game() {
     // mark
     //checkGame
   }
+
+  useEffect(() => {
+    if (visitedCount + numOfMine == height * width) {
+      console.log('win')
+    }
+  }, [visitedCount])
+
   return (
     <div className="w-fit mx-auto pt-20">
       <div className="w-fit p-4 rounded-md border shadow-md">
