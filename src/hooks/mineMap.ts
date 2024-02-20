@@ -1,4 +1,5 @@
 import { createDefaultMap } from "@/lib/mineMap"
+import { shuffle } from "@/lib/utils"
 import { Mine, MineShown } from "@/types"
 import { useEffect, useState } from "react"
 
@@ -8,20 +9,25 @@ export const useMineMap = (
     const [map, setMap] = useState<Mine[][]>([])
     const [mineCreated, setMineCreated] = useState(false)
 
-    const createMines = (i: number, j: number) => {
+    const createMines = (i_clicked: number, j_clicked: number) => {
+        let legalBurrows = new Array(height * width - 1)
+        let nLegalBurrow = 0
+        for (let i = 0; i < height * width; i++) {
+            if (i === i_clicked * width + j_clicked) {
+                continue
+            }
+            legalBurrows[nLegalBurrow] = i
+            nLegalBurrow++
+        }
+        legalBurrows = shuffle(legalBurrows)
+
         setMap((prevMap) => {
-            let mineCount = 0
-            while (mineCount < numOfMine) {
-                let rand_i = Math.floor(Math.random() * height)
-                let rand_j = Math.floor(Math.random() * width)
-                if (prevMap[rand_i][rand_j].mine == true ||
-                    (rand_i === i && rand_j === j)) {
-                    continue
-                }
-                prevMap[rand_i][rand_j].mine = true
+            for (let i = 0; i < numOfMine; i++) {
+                let mine_i = Math.floor(legalBurrows[i] / width)
+                let mine_j = legalBurrows[i] % width
+                prevMap[mine_i][mine_j].mine = true
                 // for dev
-                prevMap[rand_i][rand_j].show = MineShown.BOMB
-                mineCount++
+                prevMap[mine_i][mine_j].show = MineShown.BOMB
             }
             return prevMap
         })
