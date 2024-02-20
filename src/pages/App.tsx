@@ -39,9 +39,9 @@ function App() {
   const handleClick = () => {
     if (!inputHeight || !inputWidth || !inputNumOfMine) return
 
-    let height: number = Number(inputHeight)
-    let width: number = Number(inputWidth)
-    let numOfMine: number = Number(inputNumOfMine)
+    const height: number = Number(inputHeight)
+    const width: number = Number(inputWidth)
+    const numOfMine: number = Number(inputNumOfMine)
 
     if (height * width < numOfMine + 1) return
 
