@@ -10,6 +10,8 @@ export const useMineMap = (
     const [mineCreated, setMineCreated] = useState(false)
 
     const createMines = (i_clicked: number, j_clicked: number) => {
+        if (height * width < numOfMine + 1) throw Error
+
         let legalBurrows = new Array(height * width - 1)
         let nLegalBurrow = 0
         for (let i = 0; i < height * width; i++) {

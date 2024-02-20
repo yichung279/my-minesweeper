@@ -32,9 +32,27 @@ const HeroImg = () => {
 function App() {
   const navigate = useNavigate()
 
-  const [height, setHeight] = useState('')
-  const [width, setWidth] = useState('')
-  const [numOfMine, setNumOfMine] = useState('')
+  const [inputHeight, setInputHeight] = useState('')
+  const [inputWidth, setInputWidth] = useState('')
+  const [inputNumOfMine, setInputNumOfMine] = useState('')
+
+  const handleClick = () => {
+    if (!inputHeight || !inputWidth || !inputNumOfMine) return
+
+    let height: number = Number(inputHeight)
+    let width: number = Number(inputWidth)
+    let numOfMine: number = Number(inputNumOfMine)
+
+    if (height * width < numOfMine + 1) return
+
+    navigate('/game', {
+      state: {
+        height,
+        width,
+        numOfMine,
+      },
+    })
+  }
 
   return (
     <div className="max-w-5xl mx-auto pt-20 flex flex-col gap-10 items-center ">
@@ -46,43 +64,28 @@ function App() {
         <Input
           type="number"
           placeholder="Height..."
-          value={height}
+          value={inputHeight}
           onChange={(e) => {
-            setHeight(e.target.value)
+            setInputHeight(e.target.value)
           }}
         />
         <Input
           type="number"
           placeholder="Width..."
-          value={width}
+          value={inputWidth}
           onChange={(e) => {
-            setWidth(e.target.value)
+            setInputWidth(e.target.value)
           }}
         />
         <Input
           type="number"
           placeholder="Number of Mine..."
-          value={numOfMine}
+          value={inputNumOfMine}
           onChange={(e) => {
-            setNumOfMine(e.target.value)
+            setInputNumOfMine(e.target.value)
           }}
         />
-        <Button
-          onClick={() => {
-            height &&
-              width &&
-              numOfMine &&
-              navigate('/game', {
-                state: {
-                  height: Number(height),
-                  width: Number(width),
-                  numOfMine: Number(numOfMine),
-                },
-              })
-          }}
-        >
-          Start
-        </Button>
+        <Button onClick={handleClick}>Start</Button>
       </div>
     </div>
   )
