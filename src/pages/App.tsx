@@ -18,10 +18,10 @@ const HeroImg = () => {
         return (
           <div
             key={i}
-            className="h-12 w-12 p-2 rounded-md border shadow-md bg-slate-200"
+            className="h-12 w-12 p-3 rounded-md border shadow-md bg-slate-200"
           >
-            {v === 'flag' && <Flag className="h-8 w-8" />}
-            {v === 'bomb' && <Bomb className="h-8 w-8" />}
+            {v === 'flag' && <Flag className="h-6 w-6" />}
+            {v === 'bomb' && <Bomb className="h-6 w-6" />}
           </div>
         )
       })}
