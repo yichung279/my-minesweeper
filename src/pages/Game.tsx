@@ -1,22 +1,27 @@
-import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import { Bomb, Flag } from 'lucide-react'
 
-import { Mine, MineShown } from '@/types'
-import { createDefaultMap } from '@/lib/mineMap'
+import { MineShown } from '@/types'
+import { useMineMap } from '@/hooks/mineMap'
 
 function Game() {
   const location = useLocation()
   const { height, width, numOfMine } = location.state // TODO: check if values exist
-  console.log(numOfMine)
 
-  const [map, setMap] = useState<Mine[][]>([])
+  const { map, mineCreated, createMines } = useMineMap({
+    height,
+    width,
+    numOfMine,
+  })
 
-  useEffect(() => {
-    setMap(createDefaultMap(height, width))
-  }, [])
+  const handleClick = (i: number, j: number) => () => {
+    if (!mineCreated) {
+      createMines(i, j)
+      return
+    }
+  }
 
   return (
     <div className="w-fit mx-auto pt-20">
@@ -27,12 +32,18 @@ function Game() {
               <div key={i} className="flex gap-1">
                 {line.map((mine, j) => {
                   return (
-                    <Button key={j} variant="secondary" size="icon">
+                    <Button
+                      key={j}
+                      variant="secondary"
+                      size="icon"
+                      className="p-1"
+                      onClick={handleClick(i, j)}
+                    >
                       {mine.show === MineShown.FLAG && (
-                        <Flag className="h-8 w-8" />
+                        <Flag className="h-6 w-6" />
                       )}
                       {mine.show === MineShown.BOMB && (
-                        <Bomb className="h-8 w-8" />
+                        <Bomb className="h-6 w-6" />
                       )}
                     </Button>
                   )
