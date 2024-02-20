@@ -57,9 +57,10 @@ function Game() {
               {line.map((mine, j) => (
                 <Button
                   key={j}
-                  variant={mine.visited ? 'disabled' : 'secondary'}
+                  variant={mine.visited ? 'transparent' : 'secondary'}
                   size='icon'
                   className='p-1'
+                  disabled={gameStatus === GameStatus.LOSE || gameStatus === GameStatus.WIN}
                   onClick={(e) => handleLeftClick(e, i, j)}
                   onContextMenu={(e) => handleRightClick(e, i, j)}
                 >
