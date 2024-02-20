@@ -12,15 +12,22 @@ function Game() {
   const location = useLocation()
   const { height, width, numOfMine } = location.state // TODO: check if values exist
 
-  const { map, mineCreated, visitedCount, setMap, createMines, sweep } =
-    useMineMap({
-      height,
-      width,
-      numOfMine,
-    })
+  const {
+    map,
+    mineCreated,
+    visitedCount,
+    setMap,
+    createMines,
+    sweep,
+    toggleFlag,
+  } = useMineMap({
+    height,
+    width,
+    numOfMine,
+  })
 
   const handleLeftClick = (e: React.MouseEvent, i: number, j: number) => {
-    console.log('l')
+    if (map[i][j].flaged) return
     if (!mineCreated) createMines(i, j)
     if (map[i][j].mine) {
       console.log('lose')
@@ -33,9 +40,9 @@ function Game() {
   }
 
   const handleRightClick = (e: React.MouseEvent, i: number, j: number) => {
-    console.log('r', i, j)
     e.preventDefault()
-    // mark
+    if (map[i][j].visited || !mineCreated) return
+    toggleFlag(i, j)
     //checkGame
   }
 

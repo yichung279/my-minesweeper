@@ -10,22 +10,22 @@ export const useMineMap = (
     const [mineCreated, setMineCreated] = useState(false)
     const [visitedCount, setVisitedCount] = useState(0)
 
-    const addAroundIfOK = (prevMap: Mine[][], i: number, j: number) => {
+    const addAroundIfOK = (mineAroundMap: number[][], i: number, j: number) => {
         if (i < 0 || i >= height || j < 0 || j >= width) return
-        if (prevMap[i][j].mine) return
+        if (map[i][j].mine) return
 
-        prevMap[i][j].mineAround++
+        mineAroundMap[i][j]++
     }
 
-    const accumulateMineAround = (prevMap: Mine[][], i: number, j: number) => {
-        addAroundIfOK(prevMap, i - 1, j - 1)
-        addAroundIfOK(prevMap, i - 1, j)
-        addAroundIfOK(prevMap, i - 1, j + 1)
-        addAroundIfOK(prevMap, i, j - 1)
-        addAroundIfOK(prevMap, i, j + 1)
-        addAroundIfOK(prevMap, i + 1, j - 1)
-        addAroundIfOK(prevMap, i + 1, j)
-        addAroundIfOK(prevMap, i + 1, j + 1)
+    const accumulateMineAround = (mineAroundMap: number[][], i: number, j: number) => {
+        addAroundIfOK(mineAroundMap, i - 1, j - 1)
+        addAroundIfOK(mineAroundMap, i - 1, j)
+        addAroundIfOK(mineAroundMap, i - 1, j + 1)
+        addAroundIfOK(mineAroundMap, i, j - 1)
+        addAroundIfOK(mineAroundMap, i, j + 1)
+        addAroundIfOK(mineAroundMap, i + 1, j - 1)
+        addAroundIfOK(mineAroundMap, i + 1, j)
+        addAroundIfOK(mineAroundMap, i + 1, j + 1)
     }
 
     const createMines = (i_clicked: number, j_clicked: number) => {
@@ -47,13 +47,27 @@ export const useMineMap = (
                 let mine_i = Math.floor(legalBurrows[i] / width)
                 let mine_j = legalBurrows[i] % width
                 prevMap[mine_i][mine_j].mine = true
-                // for dev
-                prevMap[mine_i][mine_j].show = MineShown.BOMB
             }
-            for (let i = 0; i < numOfMine; i++) {
-                let mine_i = Math.floor(legalBurrows[i] / width)
-                let mine_j = legalBurrows[i] % width
-                accumulateMineAround(prevMap, mine_i, mine_j)
+            return [...prevMap]
+        })
+
+        let mineAroundMap: number[][] = []
+        for (let i = 0; i < height; i++) {
+            mineAroundMap[i] = new Array(width)
+            for (let j = 0; j < width; j++) {
+                mineAroundMap[i][j] = 0
+            }
+        }
+        for (let i = 0; i < numOfMine; i++) {
+            let mine_i = Math.floor(legalBurrows[i] / width)
+            let mine_j = legalBurrows[i] % width
+            accumulateMineAround(mineAroundMap, mine_i, mine_j)
+        }
+        setMap((prevMap) => {
+            for (let i = 0; i < height; i++) {
+                for (let j = 0; j < width; j++) {
+                    prevMap[i][j].mineAround = mineAroundMap[i][j]
+                }
             }
             return [...prevMap]
         })
@@ -82,11 +96,21 @@ export const useMineMap = (
 
     }
 
+    const toggleFlag = (i: number, j: number) => {
+        const flagged = !map[i][j].flaged
+        setMap(prevMap => {
+            prevMap[i][j].flaged = flagged
+            prevMap[i][j].show = flagged ? MineShown.FLAG : MineShown.UNVEILED
+
+            return [...prevMap]
+        })
+    }
+
     useEffect(() => {
         setMap(createDefaultMap(height, width))
     }, [])
 
 
-    return { map, mineCreated, visitedCount, setMap, createMines, sweep }
+    return { map, mineCreated, visitedCount, setMap, createMines, sweep, toggleFlag }
 
 }
