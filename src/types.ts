@@ -9,7 +9,8 @@ export enum GameStatus {
 export enum MineShown {
     FLAG = 'flag',
     BOMB = 'bomb',
-    UNVEILED = '',
+    MINE_AROUND = 'mineAround',
+    NONE = '',
 }
 
 export interface Mine {

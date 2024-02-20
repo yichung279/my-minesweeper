@@ -14,7 +14,7 @@ import { Bomb, Flag } from 'lucide-react'
 
 import { useMineMap } from '@/hooks/mineMap'
 
-import { GameStatus, MineShown } from '@/types'
+import { GameStatus, Mine, MineShown } from '@/types'
 import { useEffect, useState } from 'react'
 
 function Game() {
@@ -23,6 +23,19 @@ function Game() {
 
   const [gameStatus, setGameStatus] = useState(GameStatus.UNBEGUN)
   const [openDialog, setOpenDialog] = useState(false)
+
+  const choseIcon: (_mine: Mine) => MineShown = (mine) => {
+    if (mine.visited && mine.mineAround !== 0) {
+      return MineShown.MINE_AROUND
+    } else {
+      if (mine.flaged) {
+        return MineShown.FLAG
+      } else if (mine.mine && (gameStatus === GameStatus.LOSE || gameStatus === GameStatus.WIN)) {
+        return MineShown.BOMB
+      }
+    }
+    return MineShown.NONE
+  }
 
   const { map, handleLeftClick, handleRightClick } = useMineMap(
     { height, width, numOfMine },
@@ -50,12 +63,9 @@ function Game() {
                   onClick={(e) => handleLeftClick(e, i, j)}
                   onContextMenu={(e) => handleRightClick(e, i, j)}
                 >
-                  {mine.show === MineShown.FLAG && <Flag className='h-6 w-6' />}
-                  {mine.mine &&
-                    (gameStatus === GameStatus.LOSE || gameStatus === GameStatus.WIN) && (
-                      <Bomb className='h-6 w-6' />
-                    )}
-                  {typeof mine.show === 'number' && <span>{mine.mineAround}</span>}
+                  {choseIcon(mine) === MineShown.MINE_AROUND && <span>{mine.mineAround}</span>}
+                  {choseIcon(mine) === MineShown.FLAG && <Flag className='h-6 w-6' />}
+                  {choseIcon(mine) === MineShown.BOMB && <Bomb className='h-6 w-6' />}
                 </Button>
               ))}
             </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { createDefaultMap } from '@/lib/mineMap'
 import { shuffle } from '@/lib/utils'
-import { GameStatus, Mine, MineShown } from '@/types'
+import { GameStatus, Mine } from '@/types'
 
 export const useMineMap = (
   { height, width, numOfMine }: { height: number; width: number; numOfMine: number },
@@ -83,10 +83,8 @@ export const useMineMap = (
     prevMap[i][j].visited = true
     setVisitedCount((prevCount: number) => prevCount + 1)
 
-    if (prevMap[i][j].mineAround !== 0) {
-      prevMap[i][j].show = prevMap[i][j].mineAround
-      return
-    }
+    if (prevMap[i][j].mineAround !== 0) return
+
     sweep(prevMap, i - 1, j - 1)
     sweep(prevMap, i - 1, j)
     sweep(prevMap, i - 1, j + 1)
@@ -101,7 +99,6 @@ export const useMineMap = (
     const flagged = !map[i][j].flaged
     setMap((prevMap) => {
       prevMap[i][j].flaged = flagged
-      prevMap[i][j].show = flagged ? MineShown.FLAG : MineShown.UNVEILED
 
       return [...prevMap]
     })
