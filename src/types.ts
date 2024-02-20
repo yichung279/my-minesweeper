@@ -1,8 +1,8 @@
 /* eslint no-unused-vars: 0 */
 // TODO: fix unused-vars
 export enum MineShown {
-    FLAG,
-    BOMB,
+    FLAG = 'flag',
+    BOMB = 'bomb',
     UNVEILED = '',
 }
 
@@ -12,6 +12,6 @@ export interface Mine {
     pos_j: Number
     visited: Boolean
     flaged: Boolean
-    boom: Boolean
-    show: MineShown
+    show: MineShown | number
+    mineAround: number
 }

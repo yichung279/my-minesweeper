@@ -11,8 +11,8 @@ export const createDefaultMap = (height: number, width: number) => {
         pos_j: j,
         visited: false,
         flaged: false,
-        boom: false,
         show: MineShown.UNVEILED,
+        mineAround: 0
       }
     }
   }

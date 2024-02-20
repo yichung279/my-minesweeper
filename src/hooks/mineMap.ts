@@ -9,6 +9,24 @@ export const useMineMap = (
     const [map, setMap] = useState<Mine[][]>([])
     const [mineCreated, setMineCreated] = useState(false)
 
+    const addAroundIfOK = (prevMap: Mine[][], i: number, j: number) => {
+        if (i < 0 || i >= height || j < 0 || j >= width) return
+        if (prevMap[i][j].mine) return
+
+        prevMap[i][j].mineAround++
+    }
+
+    const accumulateMineAround = (prevMap: Mine[][], i: number, j: number) => {
+        addAroundIfOK(prevMap, i - 1, j - 1)
+        addAroundIfOK(prevMap, i - 1, j)
+        addAroundIfOK(prevMap, i - 1, j + 1)
+        addAroundIfOK(prevMap, i, j - 1)
+        addAroundIfOK(prevMap, i, j + 1)
+        addAroundIfOK(prevMap, i + 1, j - 1)
+        addAroundIfOK(prevMap, i + 1, j)
+        addAroundIfOK(prevMap, i + 1, j + 1)
+    }
+
     const createMines = (i_clicked: number, j_clicked: number) => {
         if (height * width < numOfMine + 1) throw Error
 
@@ -31,9 +49,35 @@ export const useMineMap = (
                 // for dev
                 prevMap[mine_i][mine_j].show = MineShown.BOMB
             }
-            return prevMap
+            for (let i = 0; i < numOfMine; i++) {
+                let mine_i = Math.floor(legalBurrows[i] / width)
+                let mine_j = legalBurrows[i] % width
+                accumulateMineAround(prevMap, mine_i, mine_j)
+            }
+            return [...prevMap]
         })
         setMineCreated(true)
+    }
+
+    const sweep = (prevMap: Mine[][], i: number, j: number) => {
+        if (i < 0 || i >= height || j < 0 || j >= width) return
+        if (prevMap[i][j].visited) return
+
+        prevMap[i][j].visited = true
+
+        if (prevMap[i][j].mineAround !== 0) {
+            prevMap[i][j].show = prevMap[i][j].mineAround
+            return
+        }
+        sweep(prevMap, i - 1, j - 1)
+        sweep(prevMap, i - 1, j)
+        sweep(prevMap, i - 1, j + 1)
+        sweep(prevMap, i, j - 1)
+        sweep(prevMap, i, j + 1)
+        sweep(prevMap, i + 1, j - 1)
+        sweep(prevMap, i + 1, j)
+        sweep(prevMap, i + 1, j + 1)
+
     }
 
     useEffect(() => {
@@ -41,6 +85,6 @@ export const useMineMap = (
     }, [])
 
 
-    return { map, mineCreated, createMines }
+    return { map, setMap, mineCreated, createMines, sweep }
 
 }
