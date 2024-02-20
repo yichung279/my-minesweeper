@@ -1,6 +1,6 @@
 /* eslint no-unused-vars: 0 */
-// TODO: fix unused-vars
 export enum GameStatus {
+    UNBEGUN = 'unbegun',
     INPROGRESS = 'in progress',
     WIN = 'WIN',
     LOSE = 'LOSE'

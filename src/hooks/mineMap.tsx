@@ -5,7 +5,7 @@ import { GameStatus, Mine, MineShown } from '@/types'
 
 export const useMineMap = (
   { height, width, numOfMine }: { height: number; width: number; numOfMine: number },
-  endGame: (_status: GameStatus) => void,
+  setGameStatus: React.Dispatch<React.SetStateAction<GameStatus>>,
 ) => {
   const [map, setMap] = useState<Mine[][]>([])
   const [mineCreated, setMineCreated] = useState(false)
@@ -73,6 +73,7 @@ export const useMineMap = (
       return [...prevMap]
     })
     setMineCreated(true)
+    setGameStatus(GameStatus.INPROGRESS)
   }
 
   const sweep = (prevMap: Mine[][], i: number, j: number) => {
@@ -110,7 +111,7 @@ export const useMineMap = (
     if (map[i][j].flaged) return
     if (!mineCreated) createMines(i, j)
     if (map[i][j].mine) {
-      endGame(GameStatus.LOSE)
+      setGameStatus(GameStatus.LOSE)
       return
     }
     setMap((prevMap) => {
@@ -127,7 +128,7 @@ export const useMineMap = (
 
   useEffect(() => {
     if (visitedCount + numOfMine == height * width) {
-      endGame(GameStatus.WIN)
+      setGameStatus(GameStatus.WIN)
     }
   }, [visitedCount])
 
