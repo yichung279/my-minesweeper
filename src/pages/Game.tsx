@@ -49,8 +49,8 @@ function Game() {
   }, [gameStatus])
 
   return (
-    <div className='w-fit mx-auto pt-20'>
-      <div className='w-fit p-4 rounded-md border shadow-md'>
+    <div className='mx-auto w-fit pt-20'>
+      <div className='w-fit rounded-md border p-4 shadow-md'>
         <div className='flex flex-col gap-1'>
           {map.map((line, i) => (
             <div key={i} className='flex gap-1'>

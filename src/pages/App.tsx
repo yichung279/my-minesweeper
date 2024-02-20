@@ -13,15 +13,12 @@ const HeroImg = () => {
   ]
 
   return (
-    <div className="w-fit gap-2 p-4 rounded-md border shadow-md grid grid-cols-3">
+    <div className='grid w-fit grid-cols-3 gap-2 rounded-md border p-4 shadow-md'>
       {icons.map((v, i) => {
         return (
-          <div
-            key={i}
-            className="h-12 w-12 p-3 rounded-md border shadow-md bg-slate-200"
-          >
-            {v === 'flag' && <Flag className="h-6 w-6" />}
-            {v === 'bomb' && <Bomb className="h-6 w-6" />}
+          <div key={i} className='h-12 w-12 rounded-md border bg-slate-200 p-3 shadow-md'>
+            {v === 'flag' && <Flag className='h-6 w-6' />}
+            {v === 'bomb' && <Bomb className='h-6 w-6' />}
           </div>
         )
       })}
@@ -55,31 +52,31 @@ function App() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto pt-20 flex flex-col gap-10 items-center ">
-      <h1 className="text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl text-center">
+    <div className='mx-auto flex max-w-5xl flex-col items-center gap-10 pt-20 '>
+      <h1 className='text-center text-4xl font-extrabold text-slate-900 sm:text-5xl lg:text-6xl'>
         Minesweeper
       </h1>
       <HeroImg />
-      <div className="flex flex-col gap-2 md:flex-row">
+      <div className='flex flex-col gap-2 md:flex-row'>
         <Input
-          type="number"
-          placeholder="Height..."
+          type='number'
+          placeholder='Height...'
           value={inputHeight}
           onChange={(e) => {
             setInputHeight(e.target.value)
           }}
         />
         <Input
-          type="number"
-          placeholder="Width..."
+          type='number'
+          placeholder='Width...'
           value={inputWidth}
           onChange={(e) => {
             setInputWidth(e.target.value)
           }}
         />
         <Input
-          type="number"
-          placeholder="Number of Mine..."
+          type='number'
+          placeholder='Number of Mine...'
           value={inputNumOfMine}
           onChange={(e) => {
             setInputNumOfMine(e.target.value)
