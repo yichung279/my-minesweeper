@@ -28,7 +28,7 @@ function Game() {
     if (mine.visited && mine.mineAround !== 0) {
       return MineShown.MINE_AROUND
     } else {
-      if (mine.flaged) {
+      if (mine.flagged) {
         return MineShown.FLAG
       } else if (mine.mine && (gameStatus === GameStatus.LOSE || gameStatus === GameStatus.WIN)) {
         return MineShown.BOMB

@@ -1,4 +1,4 @@
-import { Mine, MineShown } from "@/types"
+import { Mine } from "@/types"
 
 export const createDefaultMap = (height: number, width: number) => {
   const defaultMap: Mine[][] = []
@@ -7,11 +7,8 @@ export const createDefaultMap = (height: number, width: number) => {
     for (let j = 0; j < width; j++) {
       defaultMap[i][j] = {
         mine: false,
-        pos_i: i,
-        pos_j: j,
         visited: false,
-        flaged: false,
-        show: MineShown.UNVEILED,
+        flagged: false,
         mineAround: 0
       }
     }

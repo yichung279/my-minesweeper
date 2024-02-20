@@ -96,16 +96,16 @@ export const useMineMap = (
   }
 
   const toggleFlag = (i: number, j: number) => {
-    const flagged = !map[i][j].flaged
+    const flagged = !map[i][j].flagged
     setMap((prevMap) => {
-      prevMap[i][j].flaged = flagged
+      prevMap[i][j].flagged = flagged
 
       return [...prevMap]
     })
   }
 
   const handleLeftClick = (e: React.MouseEvent, i: number, j: number) => {
-    if (map[i][j].flaged) return
+    if (map[i][j].flagged) return
     if (!mineCreated) createMines(i, j)
     if (map[i][j].mine) {
       setGameStatus(GameStatus.LOSE)

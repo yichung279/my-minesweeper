@@ -15,10 +15,7 @@ export enum MineShown {
 
 export interface Mine {
     mine: boolean
-    pos_i: number
-    pos_j: number
     visited: boolean
-    flaged: boolean
-    show: MineShown | number
+    flagged: boolean
     mineAround: number
 }
